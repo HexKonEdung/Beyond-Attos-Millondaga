@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../logic/character.dart';
 import '../../logic/game_shell_state.dart';
 import '../../theme/app_theme.dart';
 import '../pages/adventure_page.dart';
@@ -11,7 +12,9 @@ import '../pages/settings_page.dart';
 /// Main game shell: five destinations in an IndexedStack, so each page keeps
 /// its state when the player switches tabs.
 class MainShell extends StatefulWidget {
-  const MainShell({super.key});
+  const MainShell({super.key, required this.character});
+
+  final Character character;
 
   @override
   State<MainShell> createState() => _MainShellState();
@@ -38,7 +41,7 @@ class _MainShellState extends State<MainShell> {
             child: IndexedStack(
               index: _shell.currentTab.index,
               children: [
-                const CharacterPage(),
+                CharacterPage(character: widget.character),
                 AdventurePage(shell: _shell),
                 const InventoryPage(),
                 MapPage(shell: _shell),

@@ -7,25 +7,30 @@ enum GameTab { character, adventure, inventory, map, settings }
 
 /// Owns navigation and player position for the main game shell.
 ///
-/// Rules (TICKET-002):
+/// Rules:
 /// - Map may only VIEW an area. It never changes the player's position.
-/// - Only [travelTo] moves the player, and only to an unlocked area.
+/// - Only [travelTo] moves the player, and only along a connected, unlocked route.
 /// - Any tab can be reached again at any time, so the player is never stuck.
 class GameShellState extends ChangeNotifier {
-  GameShellState({
-    String startAreaId = kStartingAreaId,
-    Set<String> unlockedAreaIds = const {},
-  })  : _currentAreaId = startAreaId,
-        _unlockedAreaIds = {startAreaId, ...unlockedAreaIds};
+  GameShellState({String startAreaId = kStartingAreaId})
+      : _currentAreaId = startAreaId,
+        _unlockedAreaIds = <String>{
+          for (final area in mvpAreas)
+            if (area.openAtStart) area.id,
+        };
 
   GameTab _tab = GameTab.character;
   String _currentAreaId;
   String? _viewedAreaId;
+  String? _lastEvent;
   final Set<String> _unlockedAreaIds;
 
   GameTab get currentTab => _tab;
   String get currentAreaId => _currentAreaId;
   String? get viewedAreaId => _viewedAreaId;
+
+  /// Latest travel message shown on the Adventure page.
+  String? get lastEvent => _lastEvent;
 
   bool isUnlocked(String areaId) => _unlockedAreaIds.contains(areaId);
 
@@ -50,13 +55,26 @@ class GameShellState extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Moves the player. Called from Adventure only.
-  /// Returns false if the area is locked or already current.
+  /// Moves the player along a route. Called from Adventure only.
+  /// Returns false (and sets [lastEvent]) if the move is not allowed.
   bool travelTo(String areaId) {
-    if (!isUnlocked(areaId) || areaId == _currentAreaId) return false;
-    _currentAreaId = areaId;
+    final target = areaById(areaId);
+    final here = areaById(_currentAreaId);
+
+    if (areaId == _currentAreaId) {
+      _lastEvent = 'You are already in ${target.name}.';
+    } else if (!here.connectedAreaIds.contains(areaId)) {
+      _lastEvent = 'No known route from ${here.name} to ${target.name}.';
+    } else if (!isUnlocked(areaId)) {
+      _lastEvent = 'Route locked. ${target.requirement}';
+    } else {
+      _currentAreaId = areaId;
+      _lastEvent = 'You arrive at ${target.name}.';
+      notifyListeners();
+      return true;
+    }
     notifyListeners();
-    return true;
+    return false;
   }
 
   /// Called by the objective system (TICKET-005) when a route is unlocked.

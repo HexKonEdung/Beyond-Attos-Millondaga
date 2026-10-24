@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'theme/app_theme.dart';
-import 'ui/shell/main_shell.dart';
+import 'ui/flow/home_screen.dart';
 
-/// Root widget. TICKET-003 will insert the Home / Create screens before the shell.
 class BeyondApp extends StatelessWidget {
-  const BeyondApp({super.key});
+  const BeyondApp({super.key, this.home});
+
+  /// Optional starting screen. Tests use this to skip the intro flow.
+  final Widget? home;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +15,7 @@ class BeyondApp extends StatelessWidget {
       title: 'Beyond',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.dark(),
-      home: const MainShell(),
+      home: home ?? const HomeScreen(),
     );
   }
 }

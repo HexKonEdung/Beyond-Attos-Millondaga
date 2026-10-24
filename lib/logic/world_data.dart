@@ -1,4 +1,4 @@
-/// Static MVP world data (TICKET-004). Names follow the v1.9 design screens.
+/// Static MVP world data (TICKET-004). Names follow the design screens.
 enum LocationStatus { current, available, locked }
 
 class AreaInfo {
@@ -8,6 +8,8 @@ class AreaInfo {
     required this.threat,
     required this.description,
     required this.requirement,
+    required this.connectedAreaIds,
+    this.openAtStart = false,
   });
 
   final String id;
@@ -17,6 +19,12 @@ class AreaInfo {
 
   /// Shown on locked routes so the player knows what is needed.
   final String requirement;
+
+  /// Areas reachable directly from this one.
+  final List<String> connectedAreaIds;
+
+  /// True if the route is open from the beginning of the game.
+  final bool openAtStart;
 }
 
 const String kStartingAreaId = 'greyhaven';
@@ -28,20 +36,25 @@ const List<AreaInfo> mvpAreas = [
     threat: 'NONE',
     description: 'A town of shutters, salt smoke, and stories no one finishes.',
     requirement: 'Starting town.',
+    connectedAreaIds: ['whispering_wood'],
+    openAtStart: true,
   ),
   AreaInfo(
     id: 'whispering_wood',
     name: 'WHISPERING WOOD',
     threat: 'LOW',
     description: 'The trees lean inward. Fresh tracks cross the old watch road.',
-    requirement: 'Complete the first objective (TICKET-005).',
+    requirement: 'Open from the start.',
+    connectedAreaIds: ['greyhaven', 'old_watch'],
+    openAtStart: true,
   ),
   AreaInfo(
     id: 'old_watch',
     name: 'THE OLD WATCH',
     threat: 'HIGH',
     description: 'A broken tower above the marsh. The hidden bell waits below.',
-    requirement: 'Complete the Whispering Wood objective (TICKET-005).',
+    requirement: 'Complete the first objective: find the Old Watch Path.',
+    connectedAreaIds: ['whispering_wood'],
   ),
 ];
 
