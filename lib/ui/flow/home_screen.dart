@@ -47,6 +47,7 @@ class HomeScreen extends StatelessWidget {
               TerminalButton(
                 key: const Key('home-start'),
                 label: 'Start new game',
+                primary: true,
                 expand: true,
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(builder: (_) => const CreateScreen()),

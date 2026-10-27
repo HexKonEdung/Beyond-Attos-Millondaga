@@ -10,6 +10,14 @@ class AppColors {
   static const Color textMuted = Color(0xFF999999);
   static const Color border = Color(0xFF333333);
   static const Color disabled = Color(0xFF555555);
+
+  // Accent colors from the Figma screenshots.
+  static const Color accent = Color(0xFFB068C0);
+  static const Color strike = Color(0xFFF86868);
+  static const Color item = Color(0xFFE0A030);
+  static const Color interact = Color(0xFF70B0D8);
+  static const Color prepare = Color(0xFF50B0A0);
+  static const Color flee = Color(0xFFB08050);
 }
 
 class AppTheme {

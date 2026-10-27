@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../logic/battle.dart';
 import '../../logic/character.dart';
 import '../../logic/game_shell_state.dart';
+import '../../logic/player_state.dart';
 import '../../theme/app_theme.dart';
 import '../pages/adventure_page.dart';
 import '../pages/character_page.dart';
@@ -22,10 +24,16 @@ class MainShell extends StatefulWidget {
 
 class _MainShellState extends State<MainShell> {
   final GameShellState _shell = GameShellState();
+  late final PlayerState _player =
+      PlayerState(maxHp: widget.character.finalStats['HP']!);
+  late final BattleState _battle =
+      BattleState(character: widget.character, player: _player);
 
   @override
   void dispose() {
     _shell.dispose();
+    _battle.dispose();
+    _player.dispose();
     super.dispose();
   }
 
@@ -41,9 +49,9 @@ class _MainShellState extends State<MainShell> {
             child: IndexedStack(
               index: _shell.currentTab.index,
               children: [
-                CharacterPage(character: widget.character),
-                AdventurePage(shell: _shell),
-                const InventoryPage(),
+                CharacterPage(character: widget.character, player: _player),
+                AdventurePage(shell: _shell, battle: _battle),
+                InventoryPage(player: _player),
                 MapPage(shell: _shell),
                 const SettingsPage(),
               ],
@@ -114,7 +122,7 @@ class _NavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = active ? AppColors.text : AppColors.textMuted;
+    final color = active ? AppColors.accent : AppColors.textMuted;
     return InkWell(
       onTap: onTap,
       child: Container(
@@ -123,7 +131,7 @@ class _NavItem extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border(
             top: BorderSide(
-              color: active ? AppColors.text : Colors.transparent,
+              color: active ? AppColors.accent : Colors.transparent,
               width: 2,
             ),
           ),

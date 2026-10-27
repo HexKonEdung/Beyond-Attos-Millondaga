@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 import '../../logic/character.dart';
+import '../../logic/objectives.dart';
 import '../../logic/story_data.dart';
 import '../../theme/app_theme.dart';
 import '../shell/main_shell.dart';
 import '../widgets/screen_header.dart';
 import '../widgets/terminal_button.dart';
 import '../widgets/terminal_panel.dart';
+import 'package:beyond_flutter/ui/widgets/eager_list.dart';
 
 /// Opening story and first objective, shown once after character creation.
 class StoryScreen extends StatelessWidget {
@@ -18,7 +20,7 @@ class StoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: ListView(
+        child: EagerList(
           padding: const EdgeInsets.all(16),
           children: [
             ScreenHeader(id: 'story', title: kStoryTitle),
@@ -33,10 +35,10 @@ class StoryScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(kFirstObjectiveTitle,
+                  Text(findOldWatchPath.title,
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   const SizedBox(height: 6),
-                  const Text(kFirstObjectiveText),
+                  Text(findOldWatchPath.text),
                   const SizedBox(height: 6),
                   Text('Status: NOT STARTED',
                       style: const TextStyle(color: AppColors.textMuted)),
@@ -47,6 +49,7 @@ class StoryScreen extends StatelessWidget {
             TerminalButton(
               key: const Key('story-begin'),
               label: 'Enter Greyhaven',
+              primary: true,
               expand: true,
               onPressed: () => Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(

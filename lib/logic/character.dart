@@ -53,7 +53,6 @@ class Character {
   final Map<String, int> allocation;
 
   int get level => 1;
-  int get ep => 0;
 
   Map<String, int> get finalStats => {
         for (final entry in heroClass.baseStats.entries)

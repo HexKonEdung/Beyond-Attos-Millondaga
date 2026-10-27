@@ -14,7 +14,7 @@ class KeyValueRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         children: [
-          Expanded(
+          Flexible(
             child: Text(
               label,
               style: const TextStyle(
@@ -23,12 +23,15 @@ class KeyValueRow extends StatelessWidget {
               ),
             ),
           ),
-          Text(
-            value,
-            style: const TextStyle(
-              color: AppColors.text,
-              fontWeight: FontWeight.bold,
-              fontFamily: AppTheme.fontFamily,
+          Flexible(
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              style: const TextStyle(
+                color: AppColors.text,
+                fontWeight: FontWeight.bold,
+                fontFamily: AppTheme.fontFamily,
+              ),
             ),
           ),
         ],

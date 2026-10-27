@@ -6,6 +6,7 @@ import '../../theme/app_theme.dart';
 import '../widgets/terminal_button.dart';
 import '../widgets/terminal_panel.dart';
 import 'story_screen.dart';
+import 'package:beyond_flutter/ui/widgets/eager_list.dart';
 
 class CreateScreen extends StatefulWidget {
   const CreateScreen({super.key});
@@ -60,7 +61,7 @@ class _CreateScreenState extends State<CreateScreen> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('CREATE CHARACTER')),
-      body: ListView(
+      body: EagerList(
         padding: const EdgeInsets.all(16),
         children: [
           TextField(
@@ -129,6 +130,7 @@ class _CreateScreenState extends State<CreateScreen> {
           TerminalButton(
             key: const Key('create-begin'),
             label: 'Begin the journey',
+            primary: true,
             expand: true,
             onPressed: issues.isEmpty ? _begin : null,
           ),
@@ -160,7 +162,7 @@ class _ClassCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.surface,
           border: Border.all(
-            color: selected ? AppColors.text : AppColors.border,
+            color: selected ? AppColors.accent : AppColors.border,
             width: selected ? 2 : 1,
           ),
         ),

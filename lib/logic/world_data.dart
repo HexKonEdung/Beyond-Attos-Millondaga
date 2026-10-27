@@ -60,3 +60,6 @@ const List<AreaInfo> mvpAreas = [
 
 AreaInfo areaById(String id) =>
     mvpAreas.firstWhere((area) => area.id == id);
+
+/// Area where the Mire Hound encounter and the objective are found.
+const String kEncounterAreaId = 'whispering_wood';

@@ -5,6 +5,7 @@ import '../../logic/world_data.dart';
 import '../../theme/app_theme.dart';
 import '../widgets/screen_header.dart';
 import '../widgets/terminal_panel.dart';
+import 'package:beyond_flutter/ui/widgets/eager_list.dart';
 
 /// Map tab. Selecting an area only shows its details. It never moves the player.
 class MapPage extends StatelessWidget {
@@ -20,7 +21,7 @@ class MapPage extends StatelessWidget {
         final viewedId = shell.viewedAreaId;
         final viewed = viewedId == null ? null : areaById(viewedId);
 
-        return ListView(
+        return EagerList(
           padding: const EdgeInsets.all(16),
           children: [
             const ScreenHeader(id: 'map', title: 'Map'),
